@@ -1,0 +1,1 @@
+# jitsi-OIDC-adapter

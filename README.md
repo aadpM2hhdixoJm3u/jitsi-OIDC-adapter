@@ -28,12 +28,14 @@ cd jitsi-OIDC-adapter
 ### Step 3: Install Python Dependencies
 
 You can install the Python dependencies globally or within a virtual environment. In this guide, we will install them globally as root, making them accessible system-wide. However, using a virtual environment is generally recommended to avoid conflicts between different projects.
+
+Globally:
 ```sh
 sudo su
 pip install -r requirements.txt
 exit
 ```
-To use a virtual environment instead, you can do the following:
+Using a virtual environment:
 ```sh
 python3 -m venv myenv
 source myenv/bin/activate
@@ -47,11 +49,11 @@ sudo cp body.html /usr/share/jitsi-meet/
 
 ### Step 5: Update Nginx
 
-Add the following lines as the first ```location``` blocks
+Add the following lines as the first ```location``` blocks:
 ```sh
 sudo nano /etc/nginx/sites-available/meet.yourdomain.com.conf
 ```
-```sh
+```nginx
     # /oidc/redirect
     location = /oidc/redirect {
         proxy_pass http://127.0.0.1:8000;
@@ -87,7 +89,7 @@ sudo mkdir -p /etc/gunicorn
 sudo nano /etc/gunicorn/config.py
 ```
 Example content:
-```sh
+```python
 bind = '0.0.0.0:8000'
 workers = 3
 ```
@@ -97,7 +99,7 @@ sudo nano /etc/systemd/system/gunicorn.service
 ```
 Example content:
 
-```sh
+```ini
 [Unit]
 Description=Gunicorn instance to serve myapp
 After=network.target
@@ -112,7 +114,7 @@ WantedBy=multi-user.target
 ```
 Depending on where you want to run the jitsi-OIDC-adapter from and which user you want to use, this may impact the service configuration. In this example, we are running the jitsi-OIDC-adapter from /home/ubuntu/jitsi-OIDC-adapter. However, this may change depending on your setup.
 
-### Step 6: configure jitsi-OIDC-adapter ``app.conf``
+### Step 7: configure jitsi-OIDC-adapter ``app.conf``
 
 The `app.conf` file is used to configure the OAuth, URLs, JWT, and logging settings for jitsi-OIDC-adapter. Each section is explained below:
 
@@ -139,7 +141,7 @@ The `app.conf` file is used to configure the OAuth, URLs, JWT, and logging setti
   - **Description**: The scope of the access request. `openid` is typically required for OIDC.
   - **Default Value**: `scope = openid`
 
-**Note**: If you fill out `oidc_discovery` in the `[urls]` section, you do not need to fill out `issuer`, `authorize_url`, `access_token_url`, and `jwks_uri` as these will be automatically discovered.
+**Note**: If you fill out `oidc_discovery` in the `[urls]` section, you do not need to fill out `issuer`, `authorize_url`, `access_token_url`, and `jwks_uri` as these will be automatically discovered. However, leave the default values for these fields if they are not being filled out, as the application may not handle empty values correctly.
 
 #### [urls]
 - **jitsi_base**:
@@ -175,7 +177,7 @@ The `app.conf` file is used to configure the OAuth, URLs, JWT, and logging setti
   - **Default Value**: `filemode = a`
 
 #### Example `app.conf`
-Here is an example of a filled-out `app.conf`:
+Here is an example of `app.conf`:
 
 ```ini
 [oauth]
@@ -220,7 +222,7 @@ sudo systemctl status gunicorn.service
 [logging]
 level = DEBUG
 ```
-I added extensive logging when DEBUG is on so you can easily find any issues. Make sure your Jitsi installation works with JWT and an anonymous domain before running this app. If you don't need features like Gravatar, avoid sending email in your ID token.
+I added extensive logging when `DEBUG` is on so you can easily find any issues. Make sure your Jitsi installation works with JWT and an anonymous domain before running this app. If you don't need features like Gravatar, avoid sending email in your ID token.
 
 
 

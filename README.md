@@ -215,7 +215,12 @@ Check the status:
 sudo systemctl status gunicorn.service
 ```
 
-**Note:** Turn on DEBUG logging if you experience any problems. I added extensive logging when DEBUG is on so you can easily find any issues. Make sure your Jitsi installation works with JWT and an anonymous domain before running this app. If you don't need features like Gravatar, avoid sending email in your ID token.
+**Note:** Turn on DEBUG logging if you experience any problems in `app.conf`. 
+```ìni
+[logging]
+level = DEBUG
+```
+I added extensive logging when DEBUG is on so you can easily find any issues. Make sure your Jitsi installation works with JWT and an anonymous domain before running this app. If you don't need features like Gravatar, avoid sending email in your ID token.
 
 
 

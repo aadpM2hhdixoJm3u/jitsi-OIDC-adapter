@@ -2,8 +2,9 @@
 
 This project aims to add support for OpenID Connect (OIDC) since Jitsi decided to discontinue support for Shibboleth. It is inspired by [@nordeck's](https://github.com/nordeck/jitsi-keycloak-adapter) OIDC connector for Keycloak. However, due to my limited experience with TypeScript, I have developed this project using Python and some JavaScript.
 
-The primary function of this project is to integrate authentication capabilities into Jitsi Meet through any OIDC-compliant Identity Provider (IDP). In my use case, the objective is to authenticate the meeting host, allowing guests to join the meeting without requiring authentication.<br><br>
+The primary function of this project is to integrate authentication capabilities into Jitsi Meet through any OIDC-compliant Identity Provider (IDP). In my case, the objective is to authenticate the meeting host, allowing guests to join the meeting without requiring authentication.
 
+**Note:** This app has been tested on **Ubuntu 22.04** with **Python 3** and the latest Jitsi installation. The Identity Provider (IDP) tested with this app is **Nexus DA**.<br><br>
 
 # Installation Guide
 

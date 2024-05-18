@@ -379,6 +379,6 @@ def tokenize():
     final_url = f"https://{config['jwt']['subject']}/{room_name}?jwt={encoded_jwt}"
     return redirect(final_url)
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=9000)
+#if __name__ == '__main__':
+#    app.run(debug=True, host='0.0.0.0', port=9000)
 

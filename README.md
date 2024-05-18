@@ -198,7 +198,7 @@ subject = your_subject # eg meet.yourdomain.com
 secret_key = your_jitsi_jwt_secret_key  # Must match your Jitsi JWT configuration
 
 [logging]
-level = DEBUG
+level = INFO
 filename = app.log
 filemode = a
 ```
@@ -215,7 +215,7 @@ Check the status:
 sudo systemctl status gunicorn.service
 ```
 
-
+**Note:** Turn on DEBUG logging if you experience any problems. I added extensive logging when DEBUG is on so you can easily find any issues. Make sure your Jitsi installation works with JWT and an anonymous domain before running this app. If you don't need features like Gravatar, avoid sending email in your ID token.
 
 
 

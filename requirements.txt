@@ -1,1 +1,7 @@
-
+Flask
+Authlib
+Flask-Session
+PyJWT
+requests
+cryptography
+gunicorn

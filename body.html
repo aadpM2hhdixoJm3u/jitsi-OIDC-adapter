@@ -1,1 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <script>
+      function oidcRedirect() {
+        const qs = new URLSearchParams(window.location.search.substring(1));
+        qs.delete('oidc');
+
+        const roomname = encodeURIComponent(window.location.pathname.substring(1));
+
+        window.location = `/oidc/auth?roomname=${roomname}`;
+
+        try {
+          // remove react from DOM to prevent UI distortion
+          document.all.react.remove();
+        } catch (e) {
+          // Do nothing if the React element cannot be removed
+        }
+      }
+
+      function handleButton(button) {
+        let labelKey;
+        try {
+          labelKey = Object.values(button)[0].return.memoizedProps.labelKey;
+        } catch (e) {
+          // Do nothing if the labelKey cannot be accessed
+        }
+
+        if (labelKey === "dialog.login") {
+          oidcRedirect();
+        } else if (labelKey === "dialog.IamHost") {
+          button.onclick = oidcRedirect;
+        }
+      }
+
+      let loggedModalButtonNotFound = false;
+      let loggedErrorIntercepting = false;
+
+      function interceptLoginRequest() {
+        const observer = new MutationObserver((mutationsList, observer) => {
+          for (let mutation of mutationsList) {
+            if (mutation.type === 'childList') {
+              const button = document.getElementById("modal-dialog-ok-button");
+              if (button) {
+                handleButton(button);
+                observer.disconnect(); // stop observing after finding the button
+                break;
+              } else if (!loggedModalButtonNotFound) {
+                loggedModalButtonNotFound = true;
+              }
+            }
+          }
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+
+      try {
+        interceptLoginRequest();
+      } catch (e) {
+        if (!loggedErrorIntercepting) {
+          loggedErrorIntercepting = true;
+        }
+      }
+    </script>
+</head>
+</html>
 

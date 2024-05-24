@@ -81,6 +81,7 @@ try:
     subject = get_config_value('jwt', 'subject')
     secret_key = get_config_value('jwt', 'secret_key')
 
+    logging.info("Configuration loaded successfully")
     logging.debug("Configuration loaded successfully")
     logging.debug(f"client_id: {client_id}")
     logging.debug(f"client_secret: {client_secret}")
@@ -141,7 +142,7 @@ try:
             jwks_uri=oidc_config['jwks_uri'],
             client_kwargs={'scope': ' '.join(scope)},
         )
-        logging.debug("OAuth client registered using dynamic configuration")
+        logging.info("OAuth client registered using dynamic configuration")
     else:
         # Ensure all required keys are available in the static configuration
         required_keys = {
@@ -160,7 +161,7 @@ try:
             logging.error(f"Missing required configuration keys: {', '.join(missing_keys)}")
             raise KeyError(f"Missing required configuration keys: {', '.join(missing_keys)}")
 
-        logging.debug(f"Registering OAuth client with static configuration: {required_keys}")
+        logging.info(f"Registering OAuth client with static configuration: {required_keys}")
         # Fallback to static values from app.conf
         oauth.register(
             name='oidc',
@@ -172,7 +173,7 @@ try:
             jwks_uri=jwks_uri,
             client_kwargs={'scope': scope},
         )
-        logging.debug("OAuth client registered using static configuration")
+        logging.info("OAuth client registered using static configuration")
 except KeyError as e:
     logging.error(f"Configuration error: {e}")
     raise
@@ -218,19 +219,19 @@ def parse_id_token(id_token, jwks_uri):
                 audience=oidc_config.get('client_id', config['oauth']['client_id']) if oidc_config else config['oauth']['client_id'],
                 issuer=oidc_config.get('issuer', config['oauth']['issuer']) if oidc_config else config['oauth']['issuer']
             )
-            logging.debug("ID token successfully decoded.")
+            logging.info("ID token successfully decoded.")
             return decoded
         except jwt.ExpiredSignatureError:
-            logging.debug("Token expired.")
+            logging.error("Token expired.")
             return None
         except jwt.InvalidTokenError:
-            logging.debug("Invalid token.")
+            logging.error("Invalid token.")
             return None
         except PyJWTError as e:  # Catch-all for PyJWT related exceptions
-            logging.debug(f"JWT Error: {e}")
+            logging.error(f"JWT Error: {e}")
             return None
         except Exception as e:
-            logging.debug(f"Unexpected error decoding token: {e}")
+            logging.error(f"Unexpected error decoding token: {e}")
     else:
         logging.error("RSA key not found for token decoding.")
     return None
@@ -256,9 +257,9 @@ def login():
     session['oauth_nonce'] = result.get('nonce')
 
     # Debug: Log the session values
-    logging.debug(f'Session Room Name: {session["room_name"]}')
-    logging.debug(f'Session OAuth State: {session["oauth_state"]}')
-    logging.debug(f'Session OAuth Nonce: {session.get("oauth_nonce", "None")}')
+    logging.info(f'Session Room Name: {session["room_name"]}')
+    logging.info(f'Session OAuth State: {session["oauth_state"]}')
+    logging.info(f'Session OAuth Nonce: {session.get("oauth_nonce", "None")}')
 
     # Redirect user to the IDP's authorization page
     return redirect(auth_url)
@@ -334,7 +335,7 @@ def exchange_code_for_token(code):
         logging.debug(f"Token exchange response body: {response.text}")
         
         if response.status_code == 200:
-            logging.debug("Token exchange successful.")
+            logging.info("Token exchange successful.")
             return response.json()
         else:
             logging.error(f"Failed to exchange authorization code: HTTP {response.status_code}")
@@ -346,7 +347,7 @@ def exchange_code_for_token(code):
 def get_token_endpoint():
     # Fallback if metadata is not loaded
     if not hasattr(oauth.oidc, 'client_info') or 'token_endpoint' not in oauth.oidc.client_info:
-        logging.debug("Failed to load OIDC metadata correctly.")
+        logging.error("Failed to load OIDC metadata correctly.")
         return None
     return oauth.oidc.client_info['token_endpoint']
 
@@ -377,8 +378,8 @@ def tokenize():
 
     room_name = session.get('room_name', 'default_room')
     final_url = f"https://{config['jwt']['subject']}/{room_name}?jwt={encoded_jwt}"
+    logging.info(f"Redirecting to: {final_url}")
     return redirect(final_url)
 
-#if __name__ == '__main__':
-#    app.run(debug=True, host='127.0.0.1', port=9000)
-
+# if __name__ == '__main__':
+#     app.run(debug=True, host='127.0.0.1', port=9000)

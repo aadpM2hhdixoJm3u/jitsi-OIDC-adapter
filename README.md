@@ -187,7 +187,7 @@ issuer = https://your-oidc-provider.com
 authorize_url = https://your-oidc-provider.com/authorize
 access_token_url = https://your-oidc-provider.com/token
 jwks_uri = https://your-oidc-provider.com/.well-known/jwks.json
-scope = openid
+scope = openid email profile # Change depending on your IDP's scope configuration
 
 [urls]
 jitsi_base = https://meet.yourdomain.com

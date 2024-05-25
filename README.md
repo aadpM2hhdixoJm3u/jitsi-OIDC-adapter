@@ -91,7 +91,7 @@ sudo nano /etc/gunicorn/config.py
 Example content:
 ```python
 bind = '0.0.0.0:8000'
-workers = 3
+workers = 1
 ```
 Create the systemd service file:
 ```sh

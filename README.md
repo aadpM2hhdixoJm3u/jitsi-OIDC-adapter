@@ -10,7 +10,7 @@ The primary function of this project is to integrate authentication capabilities
 
 This guide expects a working Jitsi Meet installation with JWT and an anonymous domain activated. I recommend using @emrah's [Jitsi-Token Installer](https://github.com/jitsi-contrib/installers), which is brilliant, by the way. Once that is up and running, you can follow this guide.
 
-You can also install Jitsi Meet with an anonymous domain by following the standard Jitsi install guide [here](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-quickstart).
+You can also install Jitsi Meet with an anonymous domain and JWT support by following the standard Jitsi install guide [here](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-quickstart).
 
 ### Step 1: Install Dependencies
 ```sh

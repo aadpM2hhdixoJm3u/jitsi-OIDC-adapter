@@ -4,7 +4,7 @@ This project aims to add support for OpenID Connect (OIDC) since Jitsi decided t
 
 The primary function of this project is to integrate authentication capabilities into Jitsi Meet through any OIDC-compliant Identity Provider (IDP). In my case, the objective is to authenticate the meeting host, allowing guests to join the meeting without requiring authentication.
 
-**Note:** This app has been tested on **Ubuntu 22.04** with **Python 3** and the latest Jitsi installation. The Identity Provider (IDP) tested with this app is **Nexus DA**.<br><br>
+**Note:** This app has been tested on **Ubuntu 22.04** with **Python 3** and the latest Jitsi installation. The Identity Provider (IDP) tested with this app is **Nexus DA**. But it should work with any IDP that follows the OIDC standard for authorization code flow.<br><br>
 
 # Installation Guide
 

@@ -187,7 +187,6 @@ The `app.conf` file is used to configure the OAuth, URLs, JWT, and logging setti
   - **Default Value**: `filemode = a`
 
 #### Example `app.conf`
-Here is an example of `app.conf`:
 
 ```ini
 [oauth]

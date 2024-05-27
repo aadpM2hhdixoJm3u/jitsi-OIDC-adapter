@@ -10,6 +10,8 @@ The primary function of this project is to integrate authentication capabilities
 
 This guide expects a working Jitsi Meet installation with JWT and an anonymous domain activated. I recommend using @emrah's [Jitsi-Token Installer](https://github.com/jitsi-contrib/installers), which is brilliant, by the way. Once that is up and running, you can follow this guide.
 
+You can also install Jitsi Meet with an anonymous domain by following the standard Jitsi install guide [here](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-quickstart).
+
 ### Step 1: Install Dependencies
 ```sh
 sudo apt update && sudo apt upgrade -y
@@ -44,8 +46,9 @@ pip install -r requirements.txt
 
 ### Step 4: Copy the File
 ```sh
-sudo cp body.html /usr/share/jitsi-meet/
+sudo cp body.html /etc/jitsi/meet/
 ```
+This ensures that we don't overwrite the original body.html when upgrading Jitsi. We chose this location over the root Jitsi folder to keep our customizations separate
 
 ### Step 5: Update Nginx
 
@@ -54,27 +57,33 @@ Add the following lines as the first ```location``` blocks:
 sudo nano /etc/nginx/sites-available/meet.yourdomain.com.conf
 ```
 ```nginx
+    set $body_html_location /etc/jitsi/meet/body.html;
+    
+    location = /body.html {
+        alias $body_html_location;
+    }
+    
     # /oidc/redirect
     location = /oidc/redirect {
-        proxy_pass http://127.0.0.1:8000;
+        proxy_pass http://10.80.193.192:8000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
     }
-
+    
     # /oidc/tokenize
     location = /oidc/tokenize {
-        proxy_pass http://127.0.0.1:8000;
+        proxy_pass http://10.80.193.192:8000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
     }
-
+    
     # /oidc/auth
     location = /oidc/auth {
-        proxy_pass http://127.0.0.1:8000;
+        proxy_pass http://10.80.193.192:8000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -82,6 +91,7 @@ sudo nano /etc/nginx/sites-available/meet.yourdomain.com.conf
     }
 
 ```
+
 ### Step 6: Create a Gunicorn Service
 Ceate ``/gunicorn/`` directory if needed:
 ```sh

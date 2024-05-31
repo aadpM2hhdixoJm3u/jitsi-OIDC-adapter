@@ -12,7 +12,7 @@ This guide expects a working Jitsi Meet installation with JWT and an anonymous d
 
 You can also install Jitsi Meet with an anonymous domain and JWT support by following the standard Jitsi install guide [here](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-quickstart).
 
-### Step 1: Install Dependencies
+### Step 1: Install Python
 ```sh
 sudo apt update && sudo apt upgrade -y
 sudo apt install python3 python3-pip -y
@@ -65,7 +65,7 @@ sudo nano /etc/nginx/sites-available/meet.yourdomain.com.conf
     
     # /oidc/redirect
     location = /oidc/redirect {
-        proxy_pass http://10.80.193.192:8000;
+        proxy_pass http://127.0.0.1:8000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -74,7 +74,7 @@ sudo nano /etc/nginx/sites-available/meet.yourdomain.com.conf
     
     # /oidc/tokenize
     location = /oidc/tokenize {
-        proxy_pass http://10.80.193.192:8000;
+        proxy_pass http://127.0.0.1:8000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -83,7 +83,7 @@ sudo nano /etc/nginx/sites-available/meet.yourdomain.com.conf
     
     # /oidc/auth
     location = /oidc/auth {
-        proxy_pass http://10.80.193.192:8000;
+        proxy_pass http://127.0.0.1:8000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

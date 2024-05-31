@@ -225,6 +225,18 @@ Check the status:
 ```sh
 sudo systemctl status gunicorn.service
 ```
+### Step 8: configure your IDP
+Make sure that you send ``displayName`` and ``email`` as claims or change this code to match your claims.
+```python
+        email = id_token.get('email')
+        avatar_url = get_gravatar_url(email) if email else 'http://example.com/default-avatar.png'
+
+        session['user_info'] = {
+            'name': id_token.get('displayName', 'Change me'),
+            'email': id_token.get('email', 'no-email@example.com'),
+            'avatar': avatar_url
+        }
+```
 
 **Note:** Turn on DEBUG logging if you experience any problems in `app.conf`. 
 ```ìni

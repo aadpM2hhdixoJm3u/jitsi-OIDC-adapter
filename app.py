@@ -377,7 +377,7 @@ def tokenize():
     encoded_jwt = jwt.encode(jwt_payload, secret_key, algorithm='HS256')
 
     room_name = session.get('room_name', 'default_room')
-    final_url = f"https://{config['jwt']['subject']}/{room_name}?jwt={encoded_jwt}"
+    final_url = f"https://{config['jwt']['subject']}/{room_name}?jwt={encoded_jwt}#config.prejoinPageEnabled=false"
     logging.info(f"Redirecting to: {final_url}")
     return redirect(final_url)
 

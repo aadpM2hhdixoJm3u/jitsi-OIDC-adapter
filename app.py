@@ -34,7 +34,10 @@ app = Flask(__name__)
 app.secret_key = secrets.token_urlsafe(16)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1)
 
-app.config['SESSION_TYPE'] = 'filesystem'  # Simple setup for development
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 Session(app)
 
 oauth = OAuth(app)

@@ -22,6 +22,7 @@ sudo apt install python3 python3-pip -y
 ### Step 2: Clone the Repository
 ```bash
 sudo apt install git -y
+apt install python3-pip
 git clone https://github.com/aadpM2hhdixoJm3u/jitsi-OIDC-adapter.git
 cd jitsi-OIDC-adapter
 ```

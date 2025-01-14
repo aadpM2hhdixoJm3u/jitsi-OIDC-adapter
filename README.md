@@ -118,7 +118,7 @@ After=network.target
 [Service]
 User=ubuntu # Adjust based on your environment
 Group=ubuntu # Adjust based on your environment
-WorkingDirectory=/home/ubuntu/jitsi_OIDC_adapter/ # Adjust based on your environment
+WorkingDirectory=/home/ubuntu/jitsi-OIDC-adapter/ # Adjust based on your environment
 ExecStart=/usr/local/bin/gunicorn --config /etc/gunicorn/config.py app:app # Adjust based on your environment
 [Install]
 WantedBy=multi-user.target
